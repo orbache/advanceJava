@@ -3,50 +3,48 @@ import java.util.ArrayList;
 
 public class CashDesk {
 	//variables
-	private double cashTotal = 0;
+	private double cashTotal;
 	private double total;
 	private ArrayList<PaymentLine> bill = new ArrayList<PaymentLine>(0);
-	public ArrayList<Item> itemsList = new ArrayList<Item>(0);
 	
 	//constructors
 	CashDesk(){
 		this.cashTotal = 0;
 	}
+	
 	CashDesk(double cashStartAmount){
 		this.cashTotal = cashStartAmount;
 	}	
 	
 	//methods
-	/*create new Item*/
-	public void createItem(String productName, double price) {
-		itemsList.add(new Item(productName, price));
-	}
-	/*buy an Item and add it to the bill*/
+	/*buy an item and add it to the bill*/
 	public void buyItem(Item item, int amount) {
+		double price = item.getPrice() * amount;
 		bill.add(new PaymentLine(item, amount));
+		total += price;
 	}
-	/*get current customer bill*/
-	public ArrayList<PaymentLine> getCustomerBill() {
-		return bill;
-	}
-	/*get the total of current bill*/
-	public double getTotal() {
-		total = 0;
-		for (int index=0; index < bill.size();index++) {
-			total += bill.get(index).total; 
-		}
-		return total;
-	}
+	
 	/*pay and got the change*/
 	public double pay(double payment) {
-		//Assume the payment is always more than total
+		//Assume the payment is always >= to total
 		double change = payment - getTotal();
 		this.cashTotal += getTotal();
-		bill.clear();
+		this.bill.clear();
+		this.total = 0;
 		return change;
 	}
-	/*get the total of current cash desk*/
-	public double getTotalCashDesk() {
+	
+	/*get the total of current bill*/
+	public double getTotal() {
+		return total;
+	}
+	
+	public double getCashTotal() {
 		return cashTotal;
 	}
+	
+	public ArrayList<PaymentLine> getBill() {
+		return bill;
+	}
+	
 }
