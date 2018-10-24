@@ -4,143 +4,151 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Polynom implements Comparable<Polynom> {
-	ArrayList<Term> terms = new ArrayList<Term>();
+	private ArrayList<Term> terms = new ArrayList<Term>();
 	
 	//Constructors
-	public Polynom(double[] coefficients,int[] powers) {
+	Polynom(double[] coefficients,int[] powers) {
 		for(int index = 0; index < coefficients.length;++index) {
-			this.terms.add(new Term(coefficients[index], powers[index]));
+			if(coefficients[index] != 0) {
+				this.terms.add(new Term(coefficients[index], powers[index]));	
+			}
 		}
 		Collections.sort(this.terms, Collections.reverseOrder());
 	}
 	
-	//Methods
+	Polynom() {
+	}
 	
+	//Methods
 	public Polynom plus(Polynom polynom) {
-		int index = 0;
-		double coefficient;
-		int power;
-		double[] a={0};
-		int[] b={0};
-		Term otherTerm;
-		Polynom newPolynom = new Polynom(a,b);
-		for(Term thisTerm : this.terms) {
-			while(index < polynom.terms.size()) {
-				otherTerm = polynom.terms.get(index);
-				if(otherTerm.power == thisTerm.power) {
-					coefficient = thisTerm.coefficient + otherTerm.coefficient;
-					power = thisTerm.power;
-					newPolynom.terms.add(new Term(coefficient,power));
-					index++;
-					break;
-				}
-				else if (thisTerm.power > otherTerm.power) {
-					coefficient = thisTerm.coefficient;
-					power = thisTerm.power;
-					newPolynom.terms.add(new Term(coefficient,power));
-					if(polynom.terms.indexOf(otherTerm) > this.terms.size()) {
-						newPolynom.terms.add(otherTerm);
-					}
-					break;
-				}
-				else {
-					coefficient = otherTerm.coefficient;
-					power = otherTerm.power;
-					newPolynom.terms.add(new Term(coefficient,power));
-					index++;
-					if(polynom.terms.size() == index) {
-						newPolynom.terms.add(thisTerm);
-					}
-				}
+		int thisIndex=0;
+		int otherIndex=0;
+		Term thisTerm,otherTerm;
+		Polynom newPolynom = new Polynom();
+		while(thisIndex < this.terms.size() && otherIndex < polynom.terms.size()) {
+			thisTerm = this.terms.get(thisIndex);
+			otherTerm = polynom.terms.get(otherIndex);
+			if(thisTerm.powerCompare(otherTerm) == -1) {
+				newPolynom.terms.add(new Term(otherTerm));
+				otherIndex++;
+			}
+			else if(thisTerm.powerCompare(otherTerm) == 1) {
+				newPolynom.terms.add(new Term(thisTerm));
+				thisIndex++;
+			}
+			else {
+				newPolynom.terms.add(thisTerm.plus(otherTerm));
+				thisIndex++;
+				otherIndex++;
 			}
 		}
-		newPolynom.terms.remove(0);
+		if(thisIndex == this.terms.size() && otherIndex < polynom.terms.size()) {
+			while(otherIndex < polynom.terms.size()) {
+				newPolynom.terms.add(new Term(polynom.terms.get(otherIndex)));
+				++otherIndex;
+			}
+		}
+		else if(thisIndex < this.terms.size() && otherIndex == polynom.terms.size()) {
+			while(thisIndex < this.terms.size()) {
+				newPolynom.terms.add(new Term(this.terms.get(thisIndex)));
+				++thisIndex;
+			}
+		}		
 		return newPolynom;
 	}
 	
 	public Polynom minus(Polynom polynom) {
-		int index = 0;
-		double coefficient;
-		int power;
-		double[] a={0};
-		int[] b={0};
-		Term otherTerm;
-		Polynom newPolynom = new Polynom(a,b);
-		for(Term thisTerm : this.terms) {
-			while(index < polynom.terms.size()) {
-				otherTerm = polynom.terms.get(index);
-				if(otherTerm.power == thisTerm.power) {
-					coefficient = thisTerm.coefficient - otherTerm.coefficient;
-					power = thisTerm.power;
-					newPolynom.terms.add(new Term(coefficient,power));
-					index++;
-					break;
-				}
-				else if (thisTerm.power > otherTerm.power) {
-					coefficient = thisTerm.coefficient;
-					power = thisTerm.power;
-					newPolynom.terms.add(new Term(coefficient,power));
-					if(polynom.terms.indexOf(otherTerm) > this.terms.size()) {
-						newPolynom.terms.add(otherTerm);
-					}
-					break;
-				}
-				else {
-					coefficient = -1*otherTerm.coefficient;
-					power = otherTerm.power;
-					newPolynom.terms.add(new Term(coefficient,power));
-					index++;
-					if(polynom.terms.size() == index) {
-						newPolynom.terms.add(thisTerm);
-					}
-				}
+		int thisIndex=0;
+		int otherIndex=0;
+		Term thisTerm,otherTerm;
+		Polynom newPolynom = new Polynom();
+		while(thisIndex < this.terms.size() && otherIndex < polynom.terms.size()) {
+			thisTerm = this.terms.get(thisIndex);
+			otherTerm = polynom.terms.get(otherIndex);
+			if(thisTerm.powerCompare(otherTerm) == -1) {
+				newPolynom.terms.add(new Term(otherTerm.getCoefficient()*-1,otherTerm.getPower()));
+				otherIndex++;
+			}
+			else if(thisTerm.powerCompare(otherTerm) == 1) {
+				newPolynom.terms.add(new Term(thisTerm));
+				thisIndex++;
+			}
+			else {
+				newPolynom.terms.add(thisTerm.minus(otherTerm));
+				thisIndex++;
+				otherIndex++;
 			}
 		}
-		newPolynom.terms.remove(0);
+		if(thisIndex == this.terms.size() && otherIndex < polynom.terms.size()) {
+			while(otherIndex < polynom.terms.size()) {
+				newPolynom.terms.add(new Term(polynom.terms.get(otherIndex).getCoefficient()*-1,polynom.terms.get(otherIndex).getPower()));
+				++otherIndex;
+			}
+		}
+		else if(thisIndex < this.terms.size() && otherIndex == polynom.terms.size()) {
+			while(thisIndex < this.terms.size()) {
+				newPolynom.terms.add(new Term(this.terms.get(thisIndex)));
+				++thisIndex;
+			}
+		}		
 		return newPolynom;
 	}
 
-	public void derivation() {
+	public Polynom derivation() {
+		int newPower;
+		double newCoefficient;
+		Polynom newPolynom = new Polynom();
 		for(int index=0; index < this.terms.size(); ++index) {
-			this.terms.get(index).coefficient *= this.terms.get(index).power;
-			this.terms.get(index).power -= 1;
-			if(this.terms.get(index).coefficient == 0) {
-				this.terms.remove(index);
+			newPower = this.terms.get(index).getPower()-1;
+			newCoefficient = this.terms.get(index).getCoefficient()*this.terms.get(index).getPower();
+			newPolynom.terms.add(new Term(newCoefficient,newPower));
+			if(newPolynom.terms.get(index).getCoefficient() == 0) {
+				newPolynom.terms.remove(index);
 			}
 		}
+		return newPolynom;
 	}
 
 	@Override
 	public String toString() {
 		String str="";
 		for(Term term : this.terms) {
-			if(term.coefficient != 0) {
-				if(term.coefficient > 0) {
-					str += "+" + term.coefficient + "X^" + term.power;
-					continue;
+			if(term.getCoefficient() != 0) {
+				if(term.getCoefficient() > 0) {
+					if(term.getCoefficient() == 1) {
+						str += "+";
+					}else {
+						str += "+" + term.getCoefficient();
+					}
+				}else if(term.getCoefficient() < 0) {
+					if(term.getCoefficient() == -1) {
+						str += "-";
+					}else {
+						str += term.getCoefficient();
+					}
 				}
-				str += term.coefficient + "X^" + term.power;
+			}
+			if(term.getPower() != 0) {
+				if(term.getPower() == 1) {
+					str += "X";
+				}else {
+					str += "X^" + term.getPower();
+				}
 			}
 		}
-		str = str.replace("X^1-", "X-");
-		str = str.replace("X^1+", "X+");
-		str = str.replace("X^0", "");
-		str = str.replace("+1.0X", "+X");
-		str = str.replace("-1.0X", "-X");
-		if(str.startsWith("+")) {
-			str = str.substring(1);
+		if(str.charAt(0) == '+') {
+			return str.substring(1);
 		}
-		
 		return str;
 	}
 
 	@Override
 	public int compareTo(Polynom polinom) {
-		int shortestPolynom = 0,index;
+		int shortestPolynomSize = 0,index;
 		Term thisTerm;
 		Term otherTerm;
-		shortestPolynom = this.terms.size() > polinom.terms.size() ? polinom.terms.size() : this.terms.size();
-		for(index = 0; index < shortestPolynom; ++index) {
+		shortestPolynomSize = this.terms.size() > polinom.terms.size() ? polinom.terms.size() : this.terms.size();
+		for(index = 0; index < shortestPolynomSize; ++index) {
 			thisTerm = this.terms.get(index);
 			otherTerm = polinom.terms.get(index);
 			if(thisTerm.compareTo(otherTerm) == 0) {
@@ -151,70 +159,4 @@ public class Polynom implements Comparable<Polynom> {
 		}
 		return 0;
 	}
-	
-	
-	
-	
-	
-//public Polynom minus(Polynom polynom) {
-//	int index = -1;
-//	Term term2;
-//	for(Term term1 : this.terms) {
-//		while(index < polynom.terms.size()) {
-//			index++;
-//			term2 = polynom.terms.get(index);
-//			if(term1.power == term2.power) {
-//				term1.coefficient -= term2.coefficient;
-//				polynom.terms.set(index,term1);
-//				if(term2.coefficient == 0) {
-//					polynom.terms.remove(term2);
-//				}
-//				break;
-//			}
-//			else if (term1.power > term2.power) {
-//				polynom.terms.add(index,term1);
-//				break;
-//			}
-//			else {
-//				term2.coefficient *= -1;
-//				polynom.terms.set(index,term2);
-//				if (index+1 == polynom.terms.size()) {
-//					polynom.terms.add(term1);
-//					break;
-//				}
-//			}
-//		}
-//	}
-//	return polynom;
-//}
-//
-//public Polynom plus(Polynom polynom) {
-//int index = 0;
-//Term term2;
-//for(Term term1 : this.terms) {
-//	while(index < polynom.terms.size()) {
-//		term2 = polynom.terms.get(index);
-//		if(term2.power == term1.power) {
-//			term2.coefficient += term1.coefficient;
-//			polynom.terms.set(index,term2);
-//			if(term2.coefficient == 0) {
-//				polynom.terms.remove(term2);
-//			}
-//			break;
-//		}
-//		else if (term2.power < term1.power) {
-//			polynom.terms.add(index,term1);
-//			break;
-//		}
-//		else if (index+1 == polynom.terms.size()) {
-//			polynom.terms.add(term1);
-//			break;
-//		}
-//		index++;
-//	}
-//}
-//return polynom;
-//}
-
-
 }//class Polynom

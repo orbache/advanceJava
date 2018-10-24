@@ -12,7 +12,7 @@ public class Test {
 		//variables
 		CashDesk cashDesk = new CashDesk();
 		Scanner input = new Scanner(System.in);
-		int choise,itemNumber;
+		int choise;
 		int amount;
 		int index;
 		double payment;
@@ -34,10 +34,10 @@ public class Test {
 			case 2:
 				showItemsList();
 				System.out.println("Please enter your choise: ");
-				itemNumber = input.nextInt();
+				index = input.nextInt();
 				System.out.println("Please enter the amount: ");
 				amount = input.nextInt();
-				cashDesk.buyItem(itemsList[itemNumber-1], amount);
+				cashDesk.buyItem(itemsList[index-1], amount);
 				break;
 			//Get bill
 			case 3:
@@ -77,6 +77,7 @@ public class Test {
 		}
 		System.out.println();
 	}
+	
 	public static void menu() {
 		System.out.println("\t+++++\tMenu\t+++++\n");
 		System.out.printf("\t%-27s%5s\n","Watch items list and prices","1" );
@@ -87,5 +88,5 @@ public class Test {
 		System.out.printf("\t%-27s%5s\n","Get total of the cash desk","6" );
 		System.out.println();
 	}//menu()
-}//q1
+}//Test
 
