@@ -151,9 +151,7 @@ public class Polynom implements Comparable<Polynom> {
 		for(index = 0; index < shortestPolynomSize; ++index) {
 			thisTerm = this.terms.get(index);
 			otherTerm = polinom.terms.get(index);
-			if(thisTerm.compareTo(otherTerm) == 0) {
-				continue;
-			}else {
+			if(thisTerm.compareTo(otherTerm) != 0) {
 				return thisTerm.compareTo(otherTerm);
 			}
 		}
