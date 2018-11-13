@@ -18,7 +18,6 @@ public class Test {
 		int x = 0,y = 0;
 		String xMessage = null;
 		String yMessage = null;
-		boolean doContinue = true;
 		Data dataManager = new Data();		
 		JFrame window = new JFrame();
 		window.setSize(WIDTH, HEIGHT);
@@ -27,7 +26,7 @@ public class Test {
 		window.add(graph);
 		window.setVisible(true);
 		
-		while(doContinue) {
+		while(true) {
 			xMessage = JOptionPane.showInputDialog("Please enter X cordinate:");
 			if(xMessage == null || xMessage == null || xMessage.isEmpty()) {
 				JOptionPane.showMessageDialog(graph, "Thank you! bye bye","Exit", JOptionPane.CLOSED_OPTION);
@@ -51,7 +50,7 @@ public class Test {
 				}
 			}
 			
-			if(x > window.getWidth() || x < 0 || y > window.getHeight() || y < 0) {
+			if(x > graph.getWidth() || x < 0 || y > graph.getHeight() || y < 0) {
 				JOptionPane.showMessageDialog(graph, "Out of limit","ERROR", JOptionPane.ERROR_MESSAGE);
 			}else {
 				dataManager.newPoint(x, y);
