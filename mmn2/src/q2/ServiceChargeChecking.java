@@ -1,8 +1,12 @@
 package q2;
 
+/**
+* This class is a checking account that in addition collect a monthly commission
+* @author Evyatar Orbach
+*/
 public class ServiceChargeChecking extends CheckingAccount{
 
-	private static final double MONTHLY_COMMISSION = 10;
+	private static final double MONTHLY_COMMISSION = 8;
 	private double commission = MONTHLY_COMMISSION;
 	
 	public ServiceChargeChecking(String numberAccount, String ownerAccount, String id, double balance) {
@@ -13,7 +17,7 @@ public class ServiceChargeChecking extends CheckingAccount{
 		super(numberAccount, ownerAccount, id, balance);
 		this.commission = commission;
 	}
-
+	
 	public double getCommission() {
 		return commission;
 	}
@@ -22,28 +26,47 @@ public class ServiceChargeChecking extends CheckingAccount{
 		this.commission = commission;
 	}
 	
-	@Override
-	public void monthlyManagement() {
+	/**
+	* {@inheritDoc}
+	*/
+	public void monthlyManagement() throws IllegalBalance{
 		double newBalance = this.getBalance() - this.commission;
-		this.setBalance(newBalance);
+		if(newBalance < 0) {
+			throw new IllegalBalance("There is not enough money in balance, can't charge commission");
+		}else {
+			this.setBalance(newBalance);
+		}
 	}
 	
+	/**
+	* {@inheritDoc}
+	*/
 	@Override
 	public String toString() {
 		return "Number account: "+this.getNumberAccount()+
 				" Owner Account: "+this.getOwnerAccount()+
 				" Id: "+this.getId()+
-				" Balance: "+this.getBalance()+
+				" Balance: "+String.format("%.2f", this.getBalance())+
 				" Commission: "+this.commission;
 	}
 	
-	public boolean equals(ServiceChargeChecking otherServiceChargeChecking) {
-		if(this.getNumberAccount().equals(otherServiceChargeChecking.getNumberAccount()) && 
-				this.getOwnerAccount().equals(otherServiceChargeChecking.getOwnerAccount()) && 
-				this.getId().equals(otherServiceChargeChecking.getId()) && 
-				this.getBalance() == otherServiceChargeChecking.getBalance() && 
-				this.commission == otherServiceChargeChecking.getCommission()){
-			return true;
+	/**
+	* {@inheritDoc}
+	* @param otherServiceChargeChecking other bank account to compare
+	*/
+	@Override
+	public boolean equals(BankAccount otherServiceChargeChecking) {
+		try{
+			if(this.getNumberAccount().equals(otherServiceChargeChecking.getNumberAccount()) && 
+			this.getOwnerAccount().equals(otherServiceChargeChecking.getOwnerAccount()) && 
+			this.getId().equals(otherServiceChargeChecking.getId()) && 
+			this.getBalance() == otherServiceChargeChecking.getBalance() && 
+			this.commission == ((ServiceChargeChecking)otherServiceChargeChecking).getCommission()){
+				return true;
+			}
+		}catch (Exception e) {
+			System.out.println("Can't compare 2 difference types of banks accounts");
+			return false;
 		}
 		return false;
 	}

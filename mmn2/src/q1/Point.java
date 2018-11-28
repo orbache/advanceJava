@@ -1,5 +1,9 @@
 package q1;
 
+/**
+* This class implement point
+* @author Evyatar Orbach
+*/
 public class Point {
 	private int x;
 	private int y;

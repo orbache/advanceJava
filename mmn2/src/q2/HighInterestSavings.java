@@ -1,24 +1,26 @@
 package q2;
 
+/**
+* This class is a SavingsAccount with interest (higher than in SavingsAccount) and minimum balance
+* @author Evyatar Orbach
+*/
 public class HighInterestSavings extends SavingsAccount{
 
-	private static final double ADDON_INTEREST = 0.15;
-	private static final double MINIMUM_BALANCE = 3;
+	private static final double HIGHER_INTEREST = 0.35;
+	private static final double MINIMUM_BALANCE = 12;
 	private double minimumBalance = MINIMUM_BALANCE;
 	
 	public HighInterestSavings(String numberAccount, String ownerAccount, String id, double balance) {
-		super(numberAccount, ownerAccount, id, balance);
+		super(numberAccount, ownerAccount, id, balance, HIGHER_INTEREST);
 	}
 	
 	public HighInterestSavings(String numberAccount, String ownerAccount, String id, double balance, double interest) {
-		super(numberAccount, ownerAccount, id, balance);
-		this.setInterest(interest + ADDON_INTEREST);
+		super(numberAccount, ownerAccount, id, balance, interest);
 	}
 	
 	public HighInterestSavings(String numberAccount, String ownerAccount, String id, double balance, double interest, double minimumBalance) {
-		super(numberAccount, ownerAccount, id, balance);
+		super(numberAccount, ownerAccount, id, balance, interest);
 		this.minimumBalance = minimumBalance;
-		this.setInterest(interest + ADDON_INTEREST);
 	}
 
 	public double getMinimumBalance() {
@@ -29,6 +31,9 @@ public class HighInterestSavings extends SavingsAccount{
 		this.minimumBalance = minimumBalance;
 	}
 	
+	/**
+	* {@inheritDoc}
+	*/
 	@Override
 	public void pull(double money) throws IllegalBalance {
 		double newBalance = getBalance() - money;
@@ -39,24 +44,36 @@ public class HighInterestSavings extends SavingsAccount{
 		}
 	}
 	
+	/**
+	* {@inheritDoc}
+	*/
 	@Override
 	public String toString() {
 		return "Number account: "+this.getNumberAccount()+
 				" Owner Account: "+this.getOwnerAccount()+
 				" Id: "+this.getId()+
-				" Balance: "+this.getBalance()+
+				" Balance: "+String.format("%.2f", this.getBalance())+
 				" Minimum balance: "+this.minimumBalance+
-				" Interet: "+this.getInterest();
+				" Interest: "+this.getInterest();
 	}
 	
-	public boolean equals(HighInterestSavings otherHighInterestSavings) {
-		if(this.getNumberAccount().equals(otherHighInterestSavings.getNumberAccount()) && 
+	/**
+	* {@inheritDoc}
+	*/
+	@Override
+	public boolean equals(BankAccount otherHighInterestSavings) {
+		try {
+			if(this.getNumberAccount().equals(otherHighInterestSavings.getNumberAccount()) && 
 				this.getOwnerAccount().equals(otherHighInterestSavings.getOwnerAccount()) && 
 				this.getId().equals(otherHighInterestSavings.getId()) && 
 				this.getBalance() == otherHighInterestSavings.getBalance() && 
-				this.minimumBalance == otherHighInterestSavings.getMinimumBalance() &&
-				this.getInterest() == otherHighInterestSavings.getInterest()){
-			return true;
+				this.minimumBalance == ((HighInterestSavings)otherHighInterestSavings).getMinimumBalance() &&
+				this.getInterest() == ((HighInterestSavings)otherHighInterestSavings).getInterest()){
+					return true;
+			}
+		}catch (Exception e) {
+			System.out.println("Can't compare 2 difference types of banks accounts");
+			return false;
 		}
 		return false;
 	}

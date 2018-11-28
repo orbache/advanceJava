@@ -2,6 +2,10 @@ package q1;
 
 import java.util.ArrayList;
 
+/**
+* This class implement Data that save Arraylists of points and arcs and the sum of all the arcs distances
+* @author Evyatar Orbach
+*/
 public class Data {
 	private ArrayList<Point> points = new ArrayList<Point>();
 	private ArrayList<Arc> arcs = new ArrayList<Arc>();

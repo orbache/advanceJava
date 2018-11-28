@@ -1,8 +1,12 @@
 package q2;
 
+/**
+* This class is a BankAccount with interest
+* @author Evyatar Orbach
+*/
 public class SavingsAccount extends BankAccount{
 
-	private static final double INTEREST = 0.3;
+	private static final double INTEREST = 0.25;
 	private double interest = INTEREST;
 	
 	public SavingsAccount(String numberAccount, String ownerAccount, String id, double balance) {
@@ -22,28 +26,43 @@ public class SavingsAccount extends BankAccount{
 		this.interest = interest;
 	}
 
+	/**
+	* {@inheritDoc}
+	*/
 	@Override
 	public void monthlyManagement() {
 		double newBalance = this.getBalance() * (1 + this.interest);
-		this.setBalance(newBalance);	
+		this.setBalance(newBalance);
 	}
 	
+	/**
+	* {@inheritDoc}
+	*/
 	@Override
 	public String toString() {
 		return "Number account: "+this.getNumberAccount()+
 				" Owner Account: "+this.getOwnerAccount()+
 				" Id: "+this.getId()+
-				" Balance: "+this.getBalance()+
-				" Interet: "+this.interest;
+				" Balance: "+String.format("%.2f", this.getBalance())+
+				" Interest: "+this.interest;
 	}
 	
-	public boolean equals(SavingsAccount otherSavingsAccount) {
-		if(this.getNumberAccount().equals(otherSavingsAccount.getNumberAccount()) && 
+	/**
+	* {@inheritDoc}
+	*/
+	@Override
+	public boolean equals(BankAccount otherSavingsAccount) {
+		try{
+			if(this.getNumberAccount().equals(otherSavingsAccount.getNumberAccount()) && 
 				this.getOwnerAccount().equals(otherSavingsAccount.getOwnerAccount()) && 
 				this.getId().equals(otherSavingsAccount.getId()) && 
 				this.getBalance() == otherSavingsAccount.getBalance() && 
-				this.interest == otherSavingsAccount.getInterest()){
-			return true;
+				this.interest == ((SavingsAccount)otherSavingsAccount).getInterest()){
+					return true;
+			}
+		}catch (Exception e) {
+			System.out.println("Can't compare 2 difference types of banks accounts");
+			return false;
 		}
 		return false;
 	}

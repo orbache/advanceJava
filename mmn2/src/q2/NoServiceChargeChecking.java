@@ -1,8 +1,12 @@
 package q2;
 
+/**
+* This class is a checking account with minimum balance and no monthly commission
+* @author Evyatar Orbach
+*/
 public class NoServiceChargeChecking extends CheckingAccount{
 	
-	private static final double MINIMUM_BALANCE = 5;
+	private static final double MINIMUM_BALANCE = 10;
 	private double minimumBalance = MINIMUM_BALANCE;
 	
 	public NoServiceChargeChecking(String numberAccount, String ownerAccount, String id, double balance) {
@@ -11,7 +15,9 @@ public class NoServiceChargeChecking extends CheckingAccount{
 	
 	public NoServiceChargeChecking(String numberAccount, String ownerAccount, String id, double balance, double minimumBalance) {
 		super(numberAccount, ownerAccount, id, balance);
-		this.minimumBalance = minimumBalance;
+		if(minimumBalance >= 0) {
+			this.minimumBalance = minimumBalance;
+		}
 	}
 
 	public double getMinimumBalance() {
@@ -24,6 +30,9 @@ public class NoServiceChargeChecking extends CheckingAccount{
 		}
 	}
 
+	/**
+	* {@inheritDoc}
+	*/
 	@Override
 	public void pull(double money) throws IllegalBalance {
 		double newBalance = getBalance() - money;
@@ -34,27 +43,42 @@ public class NoServiceChargeChecking extends CheckingAccount{
 		}
 	}
 	
-	@Override
-	public void monthlyManagement() {}
-	
+	/**
+	* {@inheritDoc}
+	*/
 	@Override
 	public String toString() {
 		return "Number account: "+this.getNumberAccount()+
 				" Owner Account: "+this.getOwnerAccount()+
 				" Id: "+this.getId()+
-				" Balance: "+this.getBalance()+
+				" Balance: "+String.format("%.2f", this.getBalance())+
 				" Minimum balance: "+this.minimumBalance;
 	}
 	
-	public boolean equals(NoServiceChargeChecking otherNoServiceChargeChecking) {
-		if(this.getNumberAccount().equals(otherNoServiceChargeChecking.getNumberAccount()) && 
+	/**
+	* {@inheritDoc}
+	* @param otherNoServiceChargeChecking other bank account to compare
+	*/
+	@Override
+	public boolean equals(BankAccount otherNoServiceChargeChecking) {
+		try {
+			if(this.getNumberAccount().equals(otherNoServiceChargeChecking.getNumberAccount()) && 
 				this.getOwnerAccount().equals(otherNoServiceChargeChecking.getOwnerAccount()) && 
 				this.getId().equals(otherNoServiceChargeChecking.getId()) && 
 				this.getBalance() == otherNoServiceChargeChecking.getBalance() && 
-				this.minimumBalance == otherNoServiceChargeChecking.getMinimumBalance()){
-			return true;
+				this.minimumBalance == ((NoServiceChargeChecking)otherNoServiceChargeChecking).getMinimumBalance()){
+					return true;
+			}
+		}catch (Exception e) {
+			System.out.println("Can't compare 2 difference types of banks accounts");
+			return false;
 		}
 		return false;
+	}
+
+	@Override
+	public void monthlyManagement() throws IllegalBalance {
+		
 	}
 
 }

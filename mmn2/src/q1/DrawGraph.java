@@ -4,6 +4,10 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+/**
+* This class implement DrawGraph that extend JPanel for drawing lines between points of data object
+* @author Evyatar Orbach
+*/
 public class DrawGraph extends JPanel{
 	private ArrayList<Arc> arcs;
 	
@@ -11,6 +15,10 @@ public class DrawGraph extends JPanel{
 		arcs = data.getArcs();
 	}
 	
+	/**
+	* @param Graphics for system call
+	* drawing arcs
+	*/
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
