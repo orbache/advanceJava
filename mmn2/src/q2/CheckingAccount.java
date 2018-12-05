@@ -15,11 +15,7 @@ public abstract class CheckingAccount extends BankAccount{
 	* @param money	how much money to write in the check
 	* @throws IllegalBalance if trying to write more money than in balance
 	*/
-	public void writeCheck(double money) throws IllegalBalance {
-		try {
-			this.pull(money);
-		}catch (IllegalBalance exception) {
-			throw exception;
-		}
+	public void writeCheck(double money) throws IllegalBalance{
+		this.pull(money);
 	}
 }

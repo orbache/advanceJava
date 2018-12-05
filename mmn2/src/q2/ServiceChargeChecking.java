@@ -56,18 +56,14 @@ public class ServiceChargeChecking extends CheckingAccount{
 	*/
 	@Override
 	public boolean equals(BankAccount otherServiceChargeChecking) {
-		try{
-			if(this.getNumberAccount().equals(otherServiceChargeChecking.getNumberAccount()) && 
-			this.getOwnerAccount().equals(otherServiceChargeChecking.getOwnerAccount()) && 
-			this.getId().equals(otherServiceChargeChecking.getId()) && 
-			this.getBalance() == otherServiceChargeChecking.getBalance() && 
-			this.commission == ((ServiceChargeChecking)otherServiceChargeChecking).getCommission()){
-				return true;
-			}
-		}catch (Exception e) {
-			System.out.println("Can't compare 2 difference types of banks accounts");
+		if(otherServiceChargeChecking == null || !(otherServiceChargeChecking instanceof ServiceChargeChecking)) {
 			return false;
+		}else {
+			return (this.getNumberAccount().equals(otherServiceChargeChecking.getNumberAccount()) && 
+				this.getOwnerAccount().equals(otherServiceChargeChecking.getOwnerAccount()) && 
+				this.getId().equals(otherServiceChargeChecking.getId()) && 
+				this.getBalance() == otherServiceChargeChecking.getBalance() && 
+				this.commission == ((ServiceChargeChecking)otherServiceChargeChecking).getCommission());
 		}
-		return false;
 	}
 }

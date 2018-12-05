@@ -29,7 +29,6 @@ public class SavingsAccount extends BankAccount{
 	/**
 	* {@inheritDoc}
 	*/
-	@Override
 	public void monthlyManagement() {
 		double newBalance = this.getBalance() * (1 + this.interest);
 		this.setBalance(newBalance);
@@ -52,18 +51,14 @@ public class SavingsAccount extends BankAccount{
 	*/
 	@Override
 	public boolean equals(BankAccount otherSavingsAccount) {
-		try{
-			if(this.getNumberAccount().equals(otherSavingsAccount.getNumberAccount()) && 
+		if(otherSavingsAccount == null || !(otherSavingsAccount instanceof SavingsAccount)) {
+			return false;
+		}else {
+			return (this.getNumberAccount().equals(otherSavingsAccount.getNumberAccount()) && 
 				this.getOwnerAccount().equals(otherSavingsAccount.getOwnerAccount()) && 
 				this.getId().equals(otherSavingsAccount.getId()) && 
 				this.getBalance() == otherSavingsAccount.getBalance() && 
-				this.interest == ((SavingsAccount)otherSavingsAccount).getInterest()){
-					return true;
-			}
-		}catch (Exception e) {
-			System.out.println("Can't compare 2 difference types of banks accounts");
-			return false;
+				this.interest == ((SavingsAccount)otherSavingsAccount).getInterest());
 		}
-		return false;
 	}
 }

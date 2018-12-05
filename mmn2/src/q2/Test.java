@@ -77,7 +77,7 @@ public class Test{
 		System.out.println();
 		
 		System.out.println("Checking some equals of accounts types");
-		System.out.println(accounts[0].equals(accounts[3]));//false
+		System.out.println(accounts[0].equals(accounts[2]));//false
 		System.out.println(accounts[4].equals(accounts[11]));//false
 		System.out.println(accounts[8].equals(accounts[9]));//false
 		

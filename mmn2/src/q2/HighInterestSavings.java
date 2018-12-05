@@ -62,20 +62,16 @@ public class HighInterestSavings extends SavingsAccount{
 	*/
 	@Override
 	public boolean equals(BankAccount otherHighInterestSavings) {
-		try {
-			if(this.getNumberAccount().equals(otherHighInterestSavings.getNumberAccount()) && 
+		if(otherHighInterestSavings == null || !(otherHighInterestSavings instanceof HighInterestSavings)) {
+			return false;
+		}else {
+			return (this.getNumberAccount().equals(otherHighInterestSavings.getNumberAccount()) && 
 				this.getOwnerAccount().equals(otherHighInterestSavings.getOwnerAccount()) && 
 				this.getId().equals(otherHighInterestSavings.getId()) && 
 				this.getBalance() == otherHighInterestSavings.getBalance() && 
 				this.minimumBalance == ((HighInterestSavings)otherHighInterestSavings).getMinimumBalance() &&
-				this.getInterest() == ((HighInterestSavings)otherHighInterestSavings).getInterest()){
-					return true;
-			}
-		}catch (Exception e) {
-			System.out.println("Can't compare 2 difference types of banks accounts");
-			return false;
+				this.getInterest() == ((HighInterestSavings)otherHighInterestSavings).getInterest());
 		}
-		return false;
 	}
 
 }

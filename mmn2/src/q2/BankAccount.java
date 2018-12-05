@@ -88,12 +88,13 @@ public abstract class BankAccount{
 	* @return true if all the parameters are equals, otherwise return false
 	*/
 	public boolean equals(BankAccount otherBankAccount) {
-		if(this.numberAccount.equals(otherBankAccount.numberAccount) && 
-			this.ownerAccount.equals(otherBankAccount.ownerAccount) && 
-			this.id.equals(otherBankAccount.id) && 
-			this.balance == otherBankAccount.balance) {
-				return true;
-			}
-		return false;
+		if(otherBankAccount == null || !(otherBankAccount instanceof BankAccount)) {
+			return false;
+		}else {
+			return (this.numberAccount.equals(otherBankAccount.numberAccount) && 
+				this.ownerAccount.equals(otherBankAccount.ownerAccount) && 
+				this.id.equals(otherBankAccount.id) && 
+				this.balance == otherBankAccount.balance);
+	}
 	}
 }

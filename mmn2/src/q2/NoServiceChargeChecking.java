@@ -61,22 +61,17 @@ public class NoServiceChargeChecking extends CheckingAccount{
 	*/
 	@Override
 	public boolean equals(BankAccount otherNoServiceChargeChecking) {
-		try {
-			if(this.getNumberAccount().equals(otherNoServiceChargeChecking.getNumberAccount()) && 
+		if(otherNoServiceChargeChecking == null || !(otherNoServiceChargeChecking instanceof NoServiceChargeChecking)) {
+			return false;
+		}else {
+			return (this.getNumberAccount().equals(otherNoServiceChargeChecking.getNumberAccount()) && 
 				this.getOwnerAccount().equals(otherNoServiceChargeChecking.getOwnerAccount()) && 
 				this.getId().equals(otherNoServiceChargeChecking.getId()) && 
 				this.getBalance() == otherNoServiceChargeChecking.getBalance() && 
-				this.minimumBalance == ((NoServiceChargeChecking)otherNoServiceChargeChecking).getMinimumBalance()){
-					return true;
-			}
-		}catch (Exception e) {
-			System.out.println("Can't compare 2 difference types of banks accounts");
-			return false;
+				this.minimumBalance == ((NoServiceChargeChecking)otherNoServiceChargeChecking).getMinimumBalance());
 		}
-		return false;
 	}
 
-	@Override
 	public void monthlyManagement() throws IllegalBalance {
 		
 	}

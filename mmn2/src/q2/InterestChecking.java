@@ -58,21 +58,15 @@ public class InterestChecking extends NoServiceChargeChecking{
 	*/
 	@Override
 	public boolean equals(BankAccount otherInterestChecking) {
-		try {
-			if(this.getNumberAccount().equals(otherInterestChecking.getNumberAccount()) && 
+		if(otherInterestChecking == null || !(otherInterestChecking instanceof InterestChecking)) {
+			return false;
+		}else {
+			return (this.getNumberAccount().equals(otherInterestChecking.getNumberAccount()) && 
 				this.getOwnerAccount().equals(otherInterestChecking.getOwnerAccount()) && 
 				this.getId().equals(otherInterestChecking.getId()) && 
 				this.getBalance() == otherInterestChecking.getBalance() && 
 				this.getMinimumBalance() == ((InterestChecking)otherInterestChecking).getMinimumBalance() &&
-				this.interest == ((InterestChecking)otherInterestChecking).getInterest()){
-					return true;
-			}
-		}catch (Exception e) {
-			System.out.println("Can't compare 2 difference types of banks accounts");
-			return false;
+				this.interest == ((InterestChecking)otherInterestChecking).getInterest());
 		}
-		return false;
 	}
-
-	
 }
