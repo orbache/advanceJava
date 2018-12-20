@@ -72,7 +72,7 @@ public class Frame extends JFrame implements ActionListener{
 						player += 1;
 						
 						if(CheckLine.checkLine(boardPanel.getBoard(), y, x)) {
-							JOptionPane.showMessageDialog(null,"Player " + String.valueOf(player) + " you are the winner!!");
+							JOptionPane.showMessageDialog(null,"You are the winner!!");
 							boardPanel.getBoard().clearBoard();
 							boardPanel.repaint();
 						}
@@ -83,6 +83,9 @@ public class Frame extends JFrame implements ActionListener{
 						
 						break;
 					}
+				}
+				if(y==ROWS) {
+					JOptionPane.showMessageDialog(null, "The Column is full!", "Illegal move", JOptionPane.INFORMATION_MESSAGE);
 				}
 			} 
 		}
